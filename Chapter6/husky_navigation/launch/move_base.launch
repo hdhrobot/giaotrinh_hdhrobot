@@ -1,0 +1,31 @@
+<?xml version="1.0"?>
+<launch>
+
+  <node pkg="move_base" type="move_base" respawn="false" name="move_base" output="screen">
+
+    <!-- observation sources located in costmap_common.yaml -->
+    <rosparam file="$(find husky_navigation)/config/costmap_common.yaml" command="load" ns="global_costmap" />
+    <rosparam file="$(find husky_navigation)/config/costmap_common.yaml" command="load" ns="local_costmap" />
+    
+    <!-- local costmap, needs size -->
+    <rosparam file="$(find husky_navigation)/config/costmap_local.yaml" command="load" ns="local_costmap" />
+    <param name="local_costmap/width" value="10.0"/>
+    <param name="local_costmap/height" value="10.0"/>
+
+    <!-- static global costmap, static map provides size -->
+    <rosparam file="$(find husky_navigation)/config/costmap_global.yaml" command="load" ns="global_costmap"/>
+    
+    
+    <!-- Parameters for Global Planner -->
+    <!-- <param name="base_global_planner" value="navfn/NavfnROS"/> -->
+    <param name="base_global_planner" value="global_planner/GlobalPlanner" />
+    <rosparam file="$(find husky_navigation)/config/planner_global.yaml" command="load" />
+    
+    <!-- Parameters for Local Planner -->
+    <!-- <param name="base_local_planner" value="dwa_local_planner/DWAPlannerROS"/>  -->
+    <param name="base_local_planner" value="teb_local_planner/TebLocalPlannerROS" />
+    <rosparam file="$(find husky_navigation)/config/planner_local.yaml" command="load"/>
+
+  </node>
+
+</launch>
